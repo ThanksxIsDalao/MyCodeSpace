@@ -2,15 +2,12 @@ import fs from "fs";
 import path from "path";
 
 const docsRoot = path.resolve(__dirname, "../../docs"); // docs 目录
-console.log('__dirname', __dirname);
 
 function getSidebar() {
   const files = fs.readdirSync(path.join(docsRoot));
-  console.log("++++++");
 
   return files
     .filter((file) => {
-      console.log(file); // 输出文件名
       return (
         file.endsWith(".md") && file !== "README.md" && file !== "index.md"
       );
