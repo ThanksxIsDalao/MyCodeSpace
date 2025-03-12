@@ -1,11 +1,12 @@
 import { defineConfig } from "vitepress";
 import { generateSidebar } from "./utils/autoSideBar";
+// import { getSidebar } from 'vitepress-plugin-auto-sidebar'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "My Code Space",
   description: "A VitePress Site",
-  base:'/MyCodeSpace/',
+  base: "/MyCodeSpace/",
   srcDir: "docs",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

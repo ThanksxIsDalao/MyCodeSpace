@@ -3,19 +3,36 @@ import path from "path";
 
 const docsRoot = path.resolve(__dirname, "../../docs"); // docs 目录
 
-function getSidebar() {
-  const files = fs.readdirSync(path.join(docsRoot));
+function getSidebar(dir = docsRoot, basePath = "") {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
 
-  return files
-    .filter((file) => {
+  return entries
+    .filter((entry) => {
       return (
-        file.endsWith(".md") && file !== "README.md" && file !== "index.md"
+        entry.name !== "README.md" &&
+        entry.name !== "index.md" &&
+        !entry.name.startsWith(".") // 忽略隐藏文件
       );
-    }) // 仅筛选 Markdown 文件
-    .map((file) => ({
-      text: file.replace(".md", ""), // 文档标题
-      link: `/${file.replace(".md", "")}`, // 生成链接
-    }));
+    })
+    .map((entry) => {
+      const fullPath = path.join(dir, entry.name);
+      const relativePath = path.join(basePath, entry.name);
+
+      if (entry.isDirectory()) {
+        return {
+          text: entry.name,
+          collapsible: true,
+          collapsed: true,
+          items: getSidebar(fullPath, relativePath), // 递归处理子目录
+        };
+      } else if (entry.isFile() && entry.name.endsWith(".md")) {
+        return {
+          text: entry.name.replace(".md", ""),
+          link: `/${relativePath.replace(".md", "")}`,
+        };
+      }
+    })
+    .filter(Boolean); // 过滤掉 undefined
 }
 
 export function generateSidebar() {
@@ -23,6 +40,7 @@ export function generateSidebar() {
     {
       text: "文档",
       collapsible: true,
+      collapsed: true,
       items: getSidebar(),
     },
   ];
