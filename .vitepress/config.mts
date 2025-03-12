@@ -5,7 +5,7 @@ import { generateSidebar } from "./utils/autoSideBar";
 export default defineConfig({
   title: "My Code Space",
   description: "A VitePress Site",
-  base:'/mycodespace/',
+  base:'/MyCodeSpace/',
   srcDir: "docs",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
